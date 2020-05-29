@@ -19,31 +19,31 @@ import java.awt.*;
 public class OneNoteThread extends Thread {
 
 	private String title;
-	private String body;
+	private final String body;
 
 	private ColorComponent theme;
 
-	private JDialog frame;
+	private final JDialog frame;
 
-	private JPanel titlePanel = new JPanel();
-	private JPanel colorsPanel = new JPanel(new FlowLayout());
-	private JPanel northPanel = new JPanel(new BorderLayout());
-	private JPanel buttonsMenu = new JPanel(new FlowLayout());
-	private JPanel centerPanel = new JPanel(new FlowLayout());
+	private final JPanel titlePanel = new JPanel();
+	private final JPanel colorsPanel = new JPanel(new FlowLayout());
+	private final JPanel northPanel = new JPanel(new BorderLayout());
+	private final JPanel buttonsMenu = new JPanel(new FlowLayout());
+	private final JPanel centerPanel = new JPanel(new FlowLayout());
 
-	private JButton closeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/x.png")));
-	private JLabel titleLabel = new JLabel();
+	private final JButton closeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/x.png")));
+	private final JLabel titleLabel = new JLabel();
 
-	private JTextField titleField = new JTextField();
-	private JButton customizeBtn = new JButton(
+	private final JTextField titleField = new JTextField();
+	private final JButton customizeBtn = new JButton(
 			new ImageIcon(this.getClass().getResource("/images/customize.png")));
-	private JButton titleBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/ok.png")));
-	private JButton addBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/plus.png")));
-	private JButton titleChangeBtn = new JButton(
+	private final JButton titleBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/ok.png")));
+	private final JButton addBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/plus.png")));
+	private final JButton titleChangeBtn = new JButton(
 			new ImageIcon(this.getClass().getResource("/images/change.png")));
-	private JButton removeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/minus.png")));
-	private JTextPane noteArea = new JTextPane();
-	private JScrollPane noteAreaContainer = new JScrollPane(noteArea);
+	private final JButton removeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/minus.png")));
+	private final JTextPane noteArea = new JTextPane();
+	private final JScrollPane noteAreaContainer = new JScrollPane(noteArea);
 
 	// empty Note
 	public OneNoteThread(JFrame parent) {
@@ -75,6 +75,7 @@ public class OneNoteThread extends Thread {
 		showTitlePanel(false);
 	}
 
+	@Override
 	public void run() {
 		SwingUtilities.invokeLater(this::buildGUI);
 	}

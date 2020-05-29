@@ -1,9 +1,6 @@
 package it.gb.main;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.util.HashSet;
 import java.util.Locale;
@@ -20,10 +17,9 @@ import it.gb.gui.listeners.WindowListener;
 import it.gb.gui.themes.NoteColors;
 
 public class Main {
-	
-	private static Locale locale;
+
 	public static ResourceBundle rsBundle;
-	
+
 	private static ServerSocket socketOffline;
 	private static JFrame mainInvisibleFrame;
 	public static File noteFile;
@@ -34,8 +30,8 @@ public class Main {
 //		notePath = System.getenv("APPDATA") + "\\JNotes\\notes.jnotes";
 		String notePath = "notes.jnotes";
 		noteFile = new File(notePath);
-		
-		locale = Locale.getDefault();
+
+		Locale locale = Locale.getDefault();
 
 		try {
 			rsBundle = ResourceBundle.getBundle("it.gb.lang.Res", locale);
@@ -46,7 +42,7 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-			
+
 		// TODO: this can probably be removed if you can configure the notes file from the command line
 		try {
 			socketOffline = new ServerSocket(8765);
@@ -54,7 +50,7 @@ public class Main {
 			System.out.println("Another instance is probably running...");
 			System.exit(0);
 		}
-		
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -67,7 +63,7 @@ public class Main {
 			findNotes();
 			mainInvisibleFrame.setVisible(true);
 		});
-		
+
 		new SaverThread().start();
 	}
 
@@ -78,7 +74,7 @@ public class Main {
 		mainInvisibleFrame.setSize(0, 0);
 		mainInvisibleFrame.setUndecorated(true);
 	}
-	
+
 	public static JFrame getFrame() {
 		return mainInvisibleFrame;
 	}
@@ -86,19 +82,19 @@ public class Main {
 	private static void findNotes() {
 		HashSet<NoteData> notes = new HashSet<>();
 
-		try {
-			if (noteFile.exists()) {
-				FileInputStream inputFile = new FileInputStream(noteFile);
-				ObjectInputStream streamInput = new ObjectInputStream(inputFile);
+		if (noteFile.exists()) {
+			try (InputStream inputStream = new FileInputStream(noteFile)) {
+				ObjectInputStream streamInput = new ObjectInputStream(inputStream);
 				notes = (HashSet<NoteData>) streamInput.readObject();
 				streamInput.close();
-			} else
-				notes = new HashSet<>();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Error while initializing data from file", "Critical error",
-					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-			System.exit(-1);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Error while initializing data from file", "Critical error",
+						JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+				System.exit(-1);
+			}
+		} else {
+			notes = new HashSet<>();
 		}
 
 		for (NoteData item : notes) {
