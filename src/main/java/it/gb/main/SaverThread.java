@@ -3,12 +3,15 @@ package it.gb.main;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 
 import javax.swing.JOptionPane;
 
 import it.gb.gui.OneNoteThread;
+import lombok.extern.java.Log;
 
+@Log
 public class SaverThread extends Thread {
 	@Override
 	public void run() {
@@ -22,7 +25,7 @@ public class SaverThread extends Thread {
 	}
 
 	public static void saveAll() {
-		System.out.println("Saving...");
+		log.info("Saving...");
 		HashSet<NoteData> notes = new HashSet<>();
 
 		for (OneNoteThread item : Controller.getThreads()) {
@@ -38,27 +41,23 @@ public class SaverThread extends Thread {
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Error while creating output file", "Critical error",
 						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
+				log.severe(e.toString());
 				System.exit(-1);
 			}
 		}
 
-		try {
-			FileOutputStream outToFile;
+		try (OutputStream outputStream = new FileOutputStream(Main.noteFile)) {
 			ObjectOutputStream byteStreamToSave;
 
-			outToFile = new FileOutputStream(Main.noteFile);
-
-			byteStreamToSave = new ObjectOutputStream(outToFile);
+			byteStreamToSave = new ObjectOutputStream(outputStream);
 
 			byteStreamToSave.writeObject(notes);
 			byteStreamToSave.close();
-			outToFile.close();
 
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error while saving data on file", "Critical error",
 					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			log.severe(e.toString());
 			System.exit(-1);
 		}
 
