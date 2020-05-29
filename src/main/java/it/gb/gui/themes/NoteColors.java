@@ -34,19 +34,13 @@ public class NoteColors {
 	}
 
 	public static ColorComponent searchThemeFromCommand(String command) {
-		for (ColorComponent item : COLORS) {
-			if (item.getCommand().equals(command))
-				return item;
-		}
-		return null;
+		return COLORS.stream()
+				.filter(c -> c.getCommand().equals(command))
+				.findFirst().orElse(null);
 	}
 
 	public List<ColorComponent> getColors() {
 		return COLORS;
-	}
-
-	public static ColorComponent getTheme(int index) {
-		return (index < COLORS.size()) ? COLORS.get(index) : null;
 	}
 
 	public static ColorComponent getDefaultTheme() {

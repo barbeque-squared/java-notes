@@ -41,6 +41,8 @@ public class NoteThreadMouseListener implements ActionListener {
 		case ActionCommands.CUSTOMIZE_OK_COMMAND:
 			this.instance.showColorsPanel(false);
 			break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
 		}
 
 	}

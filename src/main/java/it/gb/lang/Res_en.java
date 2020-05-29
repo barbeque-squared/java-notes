@@ -2,6 +2,7 @@ package it.gb.lang;
 
 import java.util.*;
 
+@SuppressWarnings({"unused", "squid:S101"})
 public class Res_en extends ListResourceBundle {
 
 	private static final Object[][] contents = { { "s_default_title", "Untitled" }, { "t_title", "Change the title" },
