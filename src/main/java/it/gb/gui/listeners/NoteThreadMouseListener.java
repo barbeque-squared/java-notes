@@ -1,6 +1,6 @@
 package it.gb.gui.listeners;
 
-import it.gb.gui.ActionCommands;
+import it.gb.gui.ActionCommand;
 import it.gb.gui.OneNoteThread;
 import it.gb.main.Controller;
 
@@ -17,32 +17,33 @@ public class NoteThreadMouseListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
-		case ActionCommands.CLOSE_COMMAND:
-			Controller.exit(0);
-			break;
-		case ActionCommands.TITLE_OK_COMMAND:
-			this.instance.showTitlePanel(false);
-			break;
-		case ActionCommands.TITLE_CHANGE_COMMAND:
-			this.instance.showColorsPanel(false);
-			this.instance.showTitlePanel(true);
-			break;
-		case ActionCommands.NEW_NOTE:
-			Controller.newNote();
-			break;
-		case ActionCommands.REMOVE_NOTE:
-			Controller.removeNote(this.instance);
-			break;
-		case ActionCommands.CUSTOMIZE_COMMAND:
-			this.instance.showTitlePanel(false);
-			this.instance.showColorsPanel(true);
-			break;
-		case ActionCommands.CUSTOMIZE_OK_COMMAND:
-			this.instance.showColorsPanel(false);
-			break;
+		ActionCommand command = ActionCommand.valueOf(e.getActionCommand());
+		switch (command) {
+			case CLOSE:
+				Controller.exit(0);
+				break;
+			case TITLE_OK:
+				this.instance.showTitlePanel(false);
+				break;
+			case TITLE_CHANGE:
+				this.instance.showColorsPanel(false);
+				this.instance.showTitlePanel(true);
+				break;
+			case NEW_NOTE:
+				Controller.newNote();
+				break;
+			case REMOVE_NOTE:
+				Controller.removeNote(this.instance);
+				break;
+			case CUSTOMIZE:
+				this.instance.showTitlePanel(false);
+				this.instance.showColorsPanel(true);
+				break;
+			case CUSTOMIZE_OK:
+				this.instance.showColorsPanel(false);
+				break;
 			default:
-				throw new IllegalStateException("Unexpected value: " + e.getActionCommand());
+				throw new IllegalStateException("Unexpected value: " + command);
 		}
 
 	}

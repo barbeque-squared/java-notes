@@ -31,17 +31,15 @@ public class OneNoteThread extends Thread {
 	private final JPanel buttonsMenu = new JPanel(new FlowLayout());
 	private final JPanel centerPanel = new JPanel(new FlowLayout());
 
-	private final JButton closeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/x.png")));
+	private final JButton closeBtn = iconButton("x");
 	private final JLabel titleLabel = new JLabel();
 
 	private final JTextField titleField = new JTextField();
-	private final JButton customizeBtn = new JButton(
-			new ImageIcon(this.getClass().getResource("/images/customize.png")));
-	private final JButton titleBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/ok.png")));
-	private final JButton addBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/plus.png")));
-	private final JButton titleChangeBtn = new JButton(
-			new ImageIcon(this.getClass().getResource("/images/change.png")));
-	private final JButton removeBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/minus.png")));
+	private final JButton customizeBtn = iconButton("customize");
+	private final JButton titleBtn = iconButton("ok");
+	private final JButton addBtn = iconButton("plus");
+	private final JButton titleChangeBtn = iconButton("change");
+	private final JButton removeBtn = iconButton("minus");
 	private final JTextPane noteArea = new JTextPane();
 	private final JScrollPane noteAreaContainer = new JScrollPane(noteArea);
 
@@ -105,7 +103,7 @@ public class OneNoteThread extends Thread {
 		titleChangeBtn.setContentAreaFilled(false);
 		titleChangeBtn.setOpaque(true);
 		titleChangeBtn.addActionListener(listenerMouse);
-		titleChangeBtn.setActionCommand(ActionCommands.TITLE_CHANGE_COMMAND);
+		titleChangeBtn.setActionCommand(ActionCommand.TITLE_CHANGE.name());
 		titleChangeBtn.setToolTipText(Main.rsBundle.getString("t_title"));
 
 		// new note button
@@ -114,7 +112,7 @@ public class OneNoteThread extends Thread {
 		addBtn.setContentAreaFilled(false);
 		addBtn.setOpaque(true);
 		addBtn.setPreferredSize(new Dimension(30, 30));
-		addBtn.setActionCommand(ActionCommands.NEW_NOTE);
+		addBtn.setActionCommand(ActionCommand.NEW_NOTE.name());
 		addBtn.setFocusable(false);
 		addBtn.setToolTipText(Main.rsBundle.getString("t_add"));
 
@@ -124,7 +122,7 @@ public class OneNoteThread extends Thread {
 		closeBtn.setContentAreaFilled(false);
 		closeBtn.setOpaque(true);
 		closeBtn.setPreferredSize(new Dimension(30, 30));
-		closeBtn.setActionCommand(ActionCommands.CLOSE_COMMAND);
+		closeBtn.setActionCommand(ActionCommand.CLOSE.name());
 		closeBtn.setFocusable(false);
 		closeBtn.setToolTipText(Main.rsBundle.getString("t_close"));
 
@@ -134,7 +132,7 @@ public class OneNoteThread extends Thread {
 		removeBtn.setContentAreaFilled(false);
 		removeBtn.setOpaque(true);
 		removeBtn.setPreferredSize(new Dimension(30, 30));
-		removeBtn.setActionCommand(ActionCommands.REMOVE_NOTE);
+		removeBtn.setActionCommand(ActionCommand.REMOVE_NOTE.name());
 		removeBtn.setFocusable(false);
 		removeBtn.setToolTipText(Main.rsBundle.getString("t_delete"));
 
@@ -144,7 +142,7 @@ public class OneNoteThread extends Thread {
 		customizeBtn.setBackground(Color.WHITE);
 		customizeBtn.setContentAreaFilled(false);
 		customizeBtn.setOpaque(true);
-		customizeBtn.setActionCommand(ActionCommands.CUSTOMIZE_COMMAND);
+		customizeBtn.setActionCommand(ActionCommand.CUSTOMIZE.name());
 		customizeBtn.addActionListener(listenerMouse);
 		customizeBtn.setFocusable(false);
 		customizeBtn.setToolTipText(Main.rsBundle.getString("t_customize"));
@@ -201,7 +199,7 @@ public class OneNoteThread extends Thread {
 		// confirm button
 		JButton colorsOkBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/ok.png")));
 		colorsOkBtn.setPreferredSize(new Dimension(30, 30));
-		colorsOkBtn.setActionCommand(ActionCommands.CUSTOMIZE_OK_COMMAND);
+		colorsOkBtn.setActionCommand(ActionCommand.CUSTOMIZE_OK.name());
 		colorsOkBtn.setBackground(Color.WHITE);
 		colorsOkBtn.setContentAreaFilled(false);
 		colorsOkBtn.setOpaque(true);
@@ -217,7 +215,7 @@ public class OneNoteThread extends Thread {
 
 		// Title button
 		titleBtn.setPreferredSize(new Dimension(30, 30));
-		titleBtn.setActionCommand(ActionCommands.TITLE_OK_COMMAND);
+		titleBtn.setActionCommand(ActionCommand.TITLE_OK.name());
 		titleBtn.addActionListener(listenerMouse);
 		titleBtn.setBackground(Color.WHITE);
 		titleBtn.setContentAreaFilled(false);
@@ -321,6 +319,11 @@ public class OneNoteThread extends Thread {
 
 	public void confirmTitle() {
 		this.titleBtn.doClick();
+	}
+
+
+	private JButton iconButton(String name) {
+		return new JButton(new ImageIcon(this.getClass().getResource("/images/" + name + ".png")));
 	}
 
 }
