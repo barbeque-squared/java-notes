@@ -15,6 +15,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class OneNoteThread extends Thread {
 
@@ -25,21 +26,23 @@ public class OneNoteThread extends Thread {
 
 	private final JDialog frame;
 
+	NoteThreadMouseListener mouseListener = new NoteThreadMouseListener(this);
+
 	private final JPanel titlePanel = new JPanel();
 	private final JPanel colorsPanel = new JPanel(new FlowLayout());
 	private final JPanel northPanel = new JPanel(new BorderLayout());
 	private final JPanel buttonsMenu = new JPanel(new FlowLayout());
 	private final JPanel centerPanel = new JPanel(new FlowLayout());
 
-	private final JButton closeBtn = iconButton("x");
+	private final JButton closeBtn = iconButton("x", "t_close", ActionCommand.CLOSE, mouseListener);
 	private final JLabel titleLabel = new JLabel();
 
 	private final JTextField titleField = new JTextField();
-	private final JButton customizeBtn = iconButton("customize");
-	private final JButton titleBtn = iconButton("ok");
-	private final JButton addBtn = iconButton("plus");
-	private final JButton titleChangeBtn = iconButton("change");
-	private final JButton removeBtn = iconButton("minus");
+	private final JButton customizeBtn = iconButton("customize", "t_customize", ActionCommand.CUSTOMIZE, mouseListener);
+	private final JButton titleBtn = iconButton("ok", ActionCommand.TITLE_OK, mouseListener);
+	private final JButton addBtn = iconButton("plus", "t_add", ActionCommand.NEW_NOTE, mouseListener);
+	private final JButton titleChangeBtn = iconButton("change", "t_title", ActionCommand.TITLE_CHANGE, mouseListener);
+	private final JButton removeBtn = iconButton("minus", "t_delete", ActionCommand.REMOVE_NOTE, mouseListener);
 	private final JTextPane noteArea = new JTextPane();
 	private final JScrollPane noteAreaContainer = new JScrollPane(noteArea);
 
@@ -94,66 +97,12 @@ public class OneNoteThread extends Thread {
 		// START OF TOP PANEL
 		titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 
-		NoteThreadMouseListener listenerMouse = new NoteThreadMouseListener(this);
-
-		// START OF TOP-BUTTON PANEL
-		// change title button
-		titleChangeBtn.setPreferredSize(new Dimension(30, 30));
-		titleChangeBtn.setBackground(Color.WHITE);
-		titleChangeBtn.setContentAreaFilled(false);
-		titleChangeBtn.setOpaque(true);
-		titleChangeBtn.addActionListener(listenerMouse);
-		titleChangeBtn.setActionCommand(ActionCommand.TITLE_CHANGE.name());
-		titleChangeBtn.setToolTipText(Main.rsBundle.getString("t_title"));
-
-		// new note button
-		addBtn.addActionListener(listenerMouse);
-		addBtn.setBackground(Color.WHITE);
-		addBtn.setContentAreaFilled(false);
-		addBtn.setOpaque(true);
-		addBtn.setPreferredSize(new Dimension(30, 30));
-		addBtn.setActionCommand(ActionCommand.NEW_NOTE.name());
-		addBtn.setFocusable(false);
-		addBtn.setToolTipText(Main.rsBundle.getString("t_add"));
-
-		// close button
-		closeBtn.addActionListener(listenerMouse);
-		closeBtn.setBackground(Color.WHITE);
-		closeBtn.setContentAreaFilled(false);
-		closeBtn.setOpaque(true);
-		closeBtn.setPreferredSize(new Dimension(30, 30));
-		closeBtn.setActionCommand(ActionCommand.CLOSE.name());
-		closeBtn.setFocusable(false);
-		closeBtn.setToolTipText(Main.rsBundle.getString("t_close"));
-
-		// delete note button
-		removeBtn.addActionListener(listenerMouse);
-		removeBtn.setBackground(Color.WHITE);
-		removeBtn.setContentAreaFilled(false);
-		removeBtn.setOpaque(true);
-		removeBtn.setPreferredSize(new Dimension(30, 30));
-		removeBtn.setActionCommand(ActionCommand.REMOVE_NOTE.name());
-		removeBtn.setFocusable(false);
-		removeBtn.setToolTipText(Main.rsBundle.getString("t_delete"));
-
-		// change color button
-		customizeBtn.addActionListener(listenerMouse);
-		customizeBtn.setPreferredSize(new Dimension(30, 30));
-		customizeBtn.setBackground(Color.WHITE);
-		customizeBtn.setContentAreaFilled(false);
-		customizeBtn.setOpaque(true);
-		customizeBtn.setActionCommand(ActionCommand.CUSTOMIZE.name());
-		customizeBtn.addActionListener(listenerMouse);
-		customizeBtn.setFocusable(false);
-		customizeBtn.setToolTipText(Main.rsBundle.getString("t_customize"));
-
-		// button panel
+		// TOP BUTTON PANEL
 		buttonsMenu.add(customizeBtn);
 		buttonsMenu.add(titleChangeBtn);
 		buttonsMenu.add(removeBtn);
 		buttonsMenu.add(addBtn);
 		buttonsMenu.add(closeBtn);
-		// END OF TOP-BUTTON PANEL
 
 		// GUI FUNCTIONS
 		// dragging
@@ -197,13 +146,7 @@ public class OneNoteThread extends Thread {
 		}
 
 		// confirm button
-		JButton colorsOkBtn = new JButton(new ImageIcon(this.getClass().getResource("/images/ok.png")));
-		colorsOkBtn.setPreferredSize(new Dimension(30, 30));
-		colorsOkBtn.setActionCommand(ActionCommand.CUSTOMIZE_OK.name());
-		colorsOkBtn.setBackground(Color.WHITE);
-		colorsOkBtn.setContentAreaFilled(false);
-		colorsOkBtn.setOpaque(true);
-		colorsOkBtn.addActionListener(listenerMouse);
+		JButton colorsOkBtn = iconButton("ok", ActionCommand.CUSTOMIZE_OK, mouseListener);
 		colorsPanel.add(colorsOkBtn);
 
 		// Change Title panel
@@ -212,14 +155,6 @@ public class OneNoteThread extends Thread {
 		// text field
 		titleField.setPreferredSize(new Dimension(220, 25));
 		titleField.addKeyListener(new TitleChangeListener(this));
-
-		// Title button
-		titleBtn.setPreferredSize(new Dimension(30, 30));
-		titleBtn.setActionCommand(ActionCommand.TITLE_OK.name());
-		titleBtn.addActionListener(listenerMouse);
-		titleBtn.setBackground(Color.WHITE);
-		titleBtn.setContentAreaFilled(false);
-		titleBtn.setOpaque(true);
 
 		// add them to the Change Title panel
 		titlePanel.add(this.titleField);
@@ -322,8 +257,22 @@ public class OneNoteThread extends Thread {
 	}
 
 
-	private JButton iconButton(String name) {
-		return new JButton(new ImageIcon(this.getClass().getResource("/images/" + name + ".png")));
+	private JButton iconButton(String name, ActionCommand actionCommand, ActionListener actionListener) {
+		JButton button = new JButton(new ImageIcon(this.getClass().getResource("/images/" + name + ".png")));
+		button.setPreferredSize(new Dimension(30, 30));
+		button.setBackground(Color.WHITE);
+		button.setContentAreaFilled(false);
+		button.setOpaque(true);
+		button.setFocusable(false);
+		// TODO: use setAction instead
+		button.setActionCommand(actionCommand.name());
+		button.addActionListener(actionListener);
+		return button;
 	}
 
+	private JButton iconButton(String name, String tooltip, ActionCommand actionCommand, ActionListener actionListener) {
+		JButton button = iconButton(name, actionCommand, actionListener);
+		button.setToolTipText(Main.rsBundle.getString(tooltip));
+		return button;
+	}
 }
