@@ -48,30 +48,30 @@ public class OneNoteThread extends Thread {
 
 	// empty Note
 	public OneNoteThread(JFrame parent) {
-		this.title = Main.rsBundle.getString("s_default_title");
-		this.body = "";
+		title = Main.rsBundle.getString("s_default_title");
+		body = "";
 
 		frame = new JDialog(parent);
 		frame.setLocation(new Point(10, 10));
 
-		this.setNewTheme(NoteColors.getDefaultTheme());
+		setNewTheme(NoteColors.getDefaultTheme());
 
 		showTitlePanel(true);
 	}
 
 	// already-filled Note
 	public OneNoteThread(JFrame parent, NoteData data) {
-		this.title = data.getTitle();
-		this.body = data.getText();
+		title = data.getTitle();
+		body = data.getText();
 
 		frame = new JDialog(parent);
 		frame.setLocation(data.getLocation());
 		frame.setSize(data.getSize());
 
-		this.setNewTheme(data.getTheme());
+		setNewTheme(data.getTheme());
 
 		// TODO: set focus on the note text
-		this.noteArea.setFocusable(true);
+		noteArea.setFocusable(true);
 
 		showTitlePanel(false);
 	}
@@ -82,17 +82,17 @@ public class OneNoteThread extends Thread {
 	}
 
 	public void buildGUI() {
-		frame.setTitle(this.title);
+		frame.setTitle(title);
 		frame.setUndecorated(true);
 		frame.addWindowListener(new WindowListener());
 		frame.getRootPane().setBorder(new LineBorder(Color.WHITE));
 
-		titleLabel.setText(this.title);
+		titleLabel.setText(title);
 		titleLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
 		titleLabel.setPreferredSize(new Dimension(115, 40));
-		noteArea.setText(this.body);
-		titleField.setText(this.title);
-		this.noteArea.setText(this.body);
+		noteArea.setText(body);
+		titleField.setText(title);
+		noteArea.setText(body);
 
 		// START OF TOP PANEL
 		titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 15));
@@ -157,8 +157,8 @@ public class OneNoteThread extends Thread {
 		titleField.addKeyListener(new TitleChangeListener(this));
 
 		// add them to the Change Title panel
-		titlePanel.add(this.titleField);
-		titlePanel.add(this.titleBtn);
+		titlePanel.add(titleField);
+		titlePanel.add(titleBtn);
 
 		// text field for a note
 		noteArea.setFont(new Font("Segoe Print", Font.PLAIN, 20));
@@ -168,7 +168,7 @@ public class OneNoteThread extends Thread {
 		// add panels to the central panel
 		centerPanel.add(titlePanel);
 		centerPanel.add(colorsPanel);
-		centerPanel.add(this.noteAreaContainer);
+		centerPanel.add(noteAreaContainer);
 		// END OF CENTRAL PANEL
 
 		// GUI things
@@ -179,28 +179,27 @@ public class OneNoteThread extends Thread {
 	}
 
 	public Component getFrame() {
-		return this.frame;
+		return frame;
 	}
 
 	public NoteData getData() {
-		return new NoteData(this.title, noteArea.getText(), this.frame.getLocationOnScreen(), this.theme,
-				this.frame.getSize());
+		return new NoteData(title, noteArea.getText(), getLocation(), theme, frame.getSize());
 	}
 
 	public Point getLocation() {
-		return this.frame.getLocationOnScreen();
+		return frame.getLocationOnScreen();
 	}
 
 	public void setLocation(Point point) {
 		if (point == null)
-			this.frame.setLocationRelativeTo(null);
+			frame.setLocationRelativeTo(null);
 		else
-			this.frame.setLocation(point);
+			frame.setLocation(point);
 	}
 
 	public void setNewTheme(ColorComponent colorComp) {
 		Color[] colors = colorComp.getColors();
-		this.theme = colorComp;
+		theme = colorComp;
 		Color mainColor = colors[0];
 		Color backColor = colors[1];
 		Color secColor = colors[2];
@@ -215,13 +214,13 @@ public class OneNoteThread extends Thread {
 	}
 
 	public void setNewTitle() {
-		this.title = this.titleField.getText();
+		title = titleField.getText();
 		frame.setTitle(title);
 		titleLabel.setText(title);
 	}
 
 	public boolean isWithText() {
-		return !this.noteArea.getText().equals("");
+		return !noteArea.getText().equals("");
 	}
 
 	public void dispose() {
@@ -230,35 +229,35 @@ public class OneNoteThread extends Thread {
 
 	public void showTitlePanel(boolean b) {
 		if (b) {
-			this.titleChangeBtn.setVisible(false);
-			this.titlePanel.setVisible(true);
-			this.frame.setSize(new Dimension(300, Math.max(frame.getHeight(), 350)));
+			titleChangeBtn.setVisible(false);
+			titlePanel.setVisible(true);
+			frame.setSize(new Dimension(300, Math.max(frame.getHeight(), 350)));
 		} else {
 			titlePanel.setVisible(false);
 			titleChangeBtn.setVisible(true);
-			this.frame.setSize(new Dimension(300, frame.getHeight() == 350 ? 300 : frame.getHeight()));
+			frame.setSize(new Dimension(300, frame.getHeight() == 350 ? 300 : frame.getHeight()));
 		}
 	}
 
 	public void showColorsPanel(boolean b) {
 		if (b) {
-			this.customizeBtn.setVisible(false);
-			this.colorsPanel.setVisible(true);
-			this.frame.setSize(new Dimension(300, 350));
+			customizeBtn.setVisible(false);
+			colorsPanel.setVisible(true);
+			frame.setSize(new Dimension(300, 350));
 		} else {
-			this.colorsPanel.setVisible(false);
-			this.customizeBtn.setVisible(true);
-			this.frame.setSize(new Dimension(300, 300));
+			colorsPanel.setVisible(false);
+			customizeBtn.setVisible(true);
+			frame.setSize(new Dimension(300, 300));
 		}
 	}
 
 	public void confirmTitle() {
-		this.titleBtn.doClick();
+		titleBtn.doClick();
 	}
 
 
 	private JButton iconButton(String name, ActionCommand actionCommand, ActionListener actionListener) {
-		JButton button = new JButton(new ImageIcon(this.getClass().getResource("/images/" + name + ".png")));
+		JButton button = new JButton(new ImageIcon(getClass().getResource("/images/" + name + ".png")));
 		button.setPreferredSize(new Dimension(30, 30));
 		button.setBackground(Color.WHITE);
 		button.setContentAreaFilled(false);
