@@ -8,7 +8,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import it.gb.gui.OneNoteThread;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Controller {
 
 	private static OneNoteThread lastThreadCreated = null;
@@ -52,8 +55,9 @@ public class Controller {
 				new ImageIcon(Main.class.getResource("/images/minus_big.png"))) == 0) {
 			thread.dispose();
 			threads.remove(thread);
-			if (threads.size() == 0)
+			if (threads.isEmpty()) {
 				Main.saveAndClose(0);
+			}
 		}
 	}
 	

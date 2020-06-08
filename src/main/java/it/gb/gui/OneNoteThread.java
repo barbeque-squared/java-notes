@@ -183,7 +183,7 @@ public class OneNoteThread extends Thread {
 	}
 
 	public NoteData getData() {
-		return new NoteData(title, noteArea.getText(), getLocation(), theme, frame.getSize());
+		return new NoteData(noteArea.getText(), title, getLocation(), theme, frame.getSize());
 	}
 
 	public Point getLocation() {
