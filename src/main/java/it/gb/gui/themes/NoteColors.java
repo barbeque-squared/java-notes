@@ -8,15 +8,15 @@ public class NoteColors {
 	@SuppressWarnings("SpellCheckingInspection")
 	private static final List<ColorComponent> COLORS = List.of(
 			// VIOLA
-			new ColorComponent(Color.decode("#d98cb3"), Color.decode("#993366"), Color.decode("#cc6699"), "purple theme"),
+			new ColorComponent(Color.decode("#CC9CDF"), Color.decode("#A46BBD"), Color.decode("#BF89D1"), "purple theme"),
 			// VERDE
 			new ColorComponent(Color.decode("#5cd65c"), Color.decode("#009933"), Color.decode("#88cc00"), "green theme"),
 			// BLU (DEFAULT)
-			new ColorComponent(Color.decode("#66ccff"), Color.decode("#3399ff"), Color.decode("#99ccff"), "blue theme"),
+			new ColorComponent(Color.decode("#9BDBF5"), Color.decode("#6BABDA"), Color.decode("#8CC7E7"), "blue theme"),
 			// ARANCIO
-			new ColorComponent(Color.decode("#ffa64d"), Color.decode("#e67300"), Color.decode("#ffa366"), "orange theme"),
+			new ColorComponent(Color.decode("#FABA62"), Color.decode("#EF6F2F"), Color.decode("#EF9C54"), "orange theme"),
 			// BIANCO
-			new ColorComponent(Color.WHITE, Color.LIGHT_GRAY, Color.WHITE, "white theme")
+			new ColorComponent(Color.decode("#EAEEF0"), Color.decode("#BDC1C2"), Color.decode("#DFE4E3"), "white theme")
 	);
 
 	private static NoteColors instance = null;
