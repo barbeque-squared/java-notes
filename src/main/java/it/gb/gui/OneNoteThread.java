@@ -92,7 +92,6 @@ public class OneNoteThread extends Thread {
 		frame.setTitle(title);
 		frame.setUndecorated(true);
 		frame.addWindowListener(new WindowListener());
-		frame.getRootPane().setBorder(new LineBorder(Color.WHITE));
 
 		titleLabel.setText(title);
 		titleLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
@@ -214,6 +213,7 @@ public class OneNoteThread extends Thread {
 		Color backColor = colors[1];
 		Color secColor = colors[2];
 		frame.setBackground(mainColor);
+		frame.getRootPane().setBorder(new LineBorder(backColor));
 		northPanel.setBackground(backColor);
 		buttonsMenu.setBackground(backColor);
 		centerPanel.setBackground(mainColor);
