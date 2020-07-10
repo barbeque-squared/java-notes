@@ -19,6 +19,13 @@ import java.awt.event.ActionListener;
 
 public class OneNoteThread extends Thread {
 
+	private static final int WIDTH = 300;
+	private static final int HEIGHT = 300;
+	private static final int TOOLBAR_HEIGHT = 50;
+	private static final int BUTTON_WIDTH = 30;
+	private static final int BUTTON_HEIGHT = 30;
+	private static final Dimension BUTTON_SIZE = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
+
 	private String title;
 	private final String body;
 
@@ -89,7 +96,7 @@ public class OneNoteThread extends Thread {
 
 		titleLabel.setText(title);
 		titleLabel.setBorder(new EmptyBorder(0, 10, 0, 0));
-		titleLabel.setPreferredSize(new Dimension(115, 40));
+		titleLabel.setPreferredSize(new Dimension(WIDTH - 5*BUTTON_WIDTH, TOOLBAR_HEIGHT - 10));
 		noteArea.setText(body);
 		titleField.setText(title);
 		noteArea.setText(body);
@@ -112,8 +119,8 @@ public class OneNoteThread extends Thread {
 		ComponentResizer cr = new ComponentResizer();
 		cr.registerComponent(frame);
 		cr.setSnapSize(new Dimension(10, 10));
-		cr.setMinimumSize(new Dimension(300, 300));
-		cr.setMaximumSize(new Dimension(300, 1000));
+		cr.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+		cr.setMaximumSize(new Dimension(WIDTH, 1000));
 
 		// add them to the top panel
 		northPanel.add(titleLabel, BorderLayout.WEST);
@@ -122,7 +129,7 @@ public class OneNoteThread extends Thread {
 
 		// START OF CENTRAL PANEL
 		// Color panel
-		colorsPanel.setPreferredSize(new Dimension(300, 50));
+		colorsPanel.setPreferredSize(new Dimension(WIDTH, TOOLBAR_HEIGHT));
 		colorsPanel.setVisible(false);
 
 		// get themes
@@ -133,7 +140,7 @@ public class OneNoteThread extends Thread {
 		// loop over themes
 		for (ColorComponent item : colorLib.getColors()) {
 			JButton tempBtn = new JButton();
-			tempBtn.setPreferredSize(new Dimension(30, 30));
+			tempBtn.setPreferredSize(BUTTON_SIZE);
 			tempBtn.setBorder(new LineBorder(Color.BLACK));
 			tempBtn.setBackground(item.getColors()[0]);
 			tempBtn.setContentAreaFilled(false);
@@ -150,10 +157,10 @@ public class OneNoteThread extends Thread {
 		colorsPanel.add(colorsOkBtn);
 
 		// Change Title panel
-		titlePanel.setPreferredSize(new Dimension(300, 50));
+		titlePanel.setPreferredSize(new Dimension(WIDTH, TOOLBAR_HEIGHT));
 
 		// text field
-		titleField.setPreferredSize(new Dimension(220, 25));
+		titleField.setPreferredSize(new Dimension(WIDTH - 80, 25));
 		titleField.addKeyListener(new TitleChangeListener(this));
 
 		// add them to the Change Title panel
@@ -162,7 +169,9 @@ public class OneNoteThread extends Thread {
 
 		// text field for a note
 		noteArea.setFont(new Font("Segoe Print", Font.PLAIN, 20));
-		noteAreaContainer.setPreferredSize(new Dimension(290, 250));
+		// TODO: this misses the bottom of the scrollbar if you open menu's on the minimal size
+		//       it should really just use "whatever space is left" instead of being coded this way
+		noteAreaContainer.setPreferredSize(new Dimension(WIDTH - 10, HEIGHT - TOOLBAR_HEIGHT));
 		noteAreaContainer.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		// add panels to the central panel
@@ -175,6 +184,7 @@ public class OneNoteThread extends Thread {
 		frame.setResizable(true);
 		frame.getContentPane().add(northPanel, BorderLayout.NORTH);
 		frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
+		frame.setSize(WIDTH, HEIGHT);
 		frame.setVisible(true);
 	}
 
@@ -231,11 +241,9 @@ public class OneNoteThread extends Thread {
 		if (b) {
 			titleChangeBtn.setVisible(false);
 			titlePanel.setVisible(true);
-			frame.setSize(new Dimension(300, Math.max(frame.getHeight(), 350)));
 		} else {
 			titlePanel.setVisible(false);
 			titleChangeBtn.setVisible(true);
-			frame.setSize(new Dimension(300, frame.getHeight() == 350 ? 300 : frame.getHeight()));
 		}
 	}
 
@@ -243,11 +251,9 @@ public class OneNoteThread extends Thread {
 		if (b) {
 			customizeBtn.setVisible(false);
 			colorsPanel.setVisible(true);
-			frame.setSize(new Dimension(300, 350));
 		} else {
 			colorsPanel.setVisible(false);
 			customizeBtn.setVisible(true);
-			frame.setSize(new Dimension(300, 300));
 		}
 	}
 
@@ -258,7 +264,7 @@ public class OneNoteThread extends Thread {
 
 	private JButton iconButton(String name, ActionCommand actionCommand, ActionListener actionListener) {
 		JButton button = new JButton(new ImageIcon(getClass().getResource("/images/" + name + ".png")));
-		button.setPreferredSize(new Dimension(30, 30));
+		button.setPreferredSize(BUTTON_SIZE);
 		button.setBackground(Color.WHITE);
 		button.setContentAreaFilled(false);
 		button.setOpaque(true);
