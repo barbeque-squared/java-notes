@@ -50,7 +50,7 @@ public class Controller {
 	}
 
 	public static void removeNote(OneNoteThread thread) {
-		if (thread.isWithText() && JOptionPane.showConfirmDialog(thread.getFrame(), Main.rsBundle.getString("s_delete_text"), Main.rsBundle.getString("s_delete_title"), JOptionPane.YES_NO_OPTION,
+		if (JOptionPane.showConfirmDialog(thread.getFrame(), Main.rsBundle.getString("s_delete_text"), Main.rsBundle.getString("s_delete_title"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				new ImageIcon(Main.class.getResource("/images/minus_big.png"))) == 0) {
 			thread.dispose();
