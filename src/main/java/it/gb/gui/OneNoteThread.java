@@ -19,11 +19,11 @@ import java.awt.event.ActionListener;
 
 public class OneNoteThread extends Thread {
 
-	private static final int WIDTH = 300;
-	private static final int HEIGHT = 300;
-	private static final int TOOLBAR_HEIGHT = 50;
-	private static final int BUTTON_WIDTH = 30;
-	private static final int BUTTON_HEIGHT = 30;
+	private static final int WIDTH = 220;
+	private static final int HEIGHT = 220;
+	private static final int TOOLBAR_HEIGHT = 40;
+	private static final int BUTTON_WIDTH = 25;
+	private static final int BUTTON_HEIGHT = 25;
 	private static final Dimension BUTTON_SIZE = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
 
 	private String title;
